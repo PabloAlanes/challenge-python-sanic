@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "account-service"
+version = "0.1.0"
+description = ""
+authors = ["pablo alanes <alanespablo@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+sanic = {extras = ["ext"], version = "^23.12.1"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
