@@ -1,0 +1,28 @@
+**/__pycache__/
+**/*.py[cod]
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+docker-compose.yml
+Dockerfile
+.docker
+.dockerignore
+
+# Virtual environment
+.env
+.venv/
+venv/
+
+# PyCharm
+.idea
+
+# VS Code
+.vscode/
+
+# Report
+*report.html
+
