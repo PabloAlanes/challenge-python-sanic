@@ -28,17 +28,39 @@ def callback(ch, method, properties, body):
         transaction_resp = requests.get(f'{TRANSACTION_SVC_URL}/transactions/{transaction_id}',
                                         headers=headers)
         transaction = transaction_resp.json()
-        logger.info(transaction)
+    except requests.exceptions.ConnectionError:
+        logger.error('Error to get transaction data')
+        ch.basic_ack(delivery_tag=method.delivery_tag)
+        logger.error(f'Finish transaction ID:{body.decode()}')
+        return
+
+
+    try:
+        if ACCOUNT_SVC_ENABLED:
+            # Load accounts data
+            acc_source_resp = requests.get(f'{ACCOUNT_SVC_URL}/accounts/{transaction.get("source")}')
+            acc_dest_resp = requests.get(f'{ACCOUNT_SVC_URL}/accounts/{transaction.get("destiny")}')
+
+            # Update accounts data
+            new_acc_dest = acc_dest_resp.json().get('money') + transaction.get("amount")
+            new_acc_source = acc_source_resp.json().get('money') - transaction.get("amount")
+
+            requests.put(f'{ACCOUNT_SVC_URL}/accounts/{transaction.get("source")}',
+                         json={"money": new_acc_source}, headers=headers)
+            requests.put(f'{ACCOUNT_SVC_URL}/accounts/{transaction.get("destiny")}',
+                         json={"money": new_acc_dest}, headers=headers)
 
         # Update transaction status
         requests.put(f'{TRANSACTION_SVC_URL}/transactions/{transaction_id}',
                      json={"status": "done"}, headers=headers)
 
     except requests.exceptions.ConnectionError:
-        logger.error('Error to get transaction data')
+        logger.error('Error to update accounts')
+        requests.put(f'{TRANSACTION_SVC_URL}/transactions/{transaction_id}',
+                     json={"status": "error"}, headers=headers)
 
     ch.basic_ack(delivery_tag=method.delivery_tag)
-    logger.info(f'Finish transaction ID:{body.decode()}')
+    logger.info(f'Finish transaction ID:{transaction_id}')
 
 
 if __name__ == '__main__':
