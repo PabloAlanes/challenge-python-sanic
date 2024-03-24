@@ -9,6 +9,27 @@ services:
     volumes:
       - ./:/sanic/
     command: "poetry run python server.py"
+    depends_on:
+      - mongodb
     env_file:
       - .env
     restart: always
+    networks:
+      - local-network
+
+  mongodb:
+    hostname: mongodb
+    image: mongo
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - local-network
+
+networks:
+  local-network:
+    driver: bridge
+
+volumes:
+  mongodata:
