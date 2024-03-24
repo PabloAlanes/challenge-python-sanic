@@ -1,0 +1,74 @@
+version: "3.8"
+
+services:
+  api-account:
+    hostname: api-account
+    build: ./account-service
+    ports:
+      - "8080:8000"
+    volumes:
+      - ./account-service/account_service:/sanic/account_service
+    command: "poetry run python server.py"
+    depends_on:
+      - mongodb
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - local-network
+
+  api-transaction:
+    hostname: api-transaction
+    build: ./transaction-service
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./transaction-service/transaction_service:/sanic/transaction_service
+    command: "poetry run python server.py"
+    depends_on:
+      - rabbitmq
+      - mongodb
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - local-network
+
+  worker-transaction:
+    build: ./transaction-service
+    volumes:
+      - ./transaction-service/worker.py:/sanic/worker.py
+    command: "poetry run python worker.py"
+    depends_on:
+      - rabbitmq
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - local-network
+
+  mongodb:
+    hostname: mongodb
+    image: mongo
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - local-network
+
+  rabbitmq:
+    hostname: rabbitmq
+    image: rabbitmq:3.13-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - local-network
+
+networks:
+  local-network:
+    driver: bridge
+
+volumes:
+  mongodata:
