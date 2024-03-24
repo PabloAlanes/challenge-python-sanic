@@ -6,6 +6,15 @@ class AccountModel(Document):
     money = IntField(default=0)
     user = EmbeddedDocumentField(UserModel)
 
+    openapi_schema = {
+        'type': 'object',
+        'required': ['source_account', 'destiny_account', 'amount'],
+        'properties': {
+            'money': { 'type': 'integer', 'format': 'int32', 'minimum': 0 },
+            'user': UserModel.openapi_schema
+        }
+    }
+
     def to_dict(self):
         return {
             'id': str(self.id),
