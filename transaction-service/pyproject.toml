@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "account-service"
+name = "transaction-service"
 version = "0.1.0"
 description = ""
 authors = ["pablo alanes <alanespablo@gmail.com>"]
