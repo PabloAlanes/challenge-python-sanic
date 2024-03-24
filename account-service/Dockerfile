@@ -14,7 +14,9 @@ RUN pip install poetry
 COPY poetry.lock pyproject.toml ./
 RUN poetry install --no-interaction --no-cache --no-dev
 
-COPY . .
+COPY server.py ./
+COPY settings ./settings
+COPY account_service ./account_service
 
 CMD ["poetry", "run", "python", "server.py"]
 

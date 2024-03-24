@@ -7,7 +7,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./:/sanic/
+      - ./account_service:/sanic/account_service
     command: "poetry run python server.py"
     depends_on:
       - mongodb
