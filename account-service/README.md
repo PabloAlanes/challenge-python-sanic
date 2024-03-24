@@ -20,14 +20,23 @@ Este servicio se conecta con un MongoDB para guardar los datos de las cuentas.
 
 ## Instalacion
 
-1. Clonar el proyecto de gitlab mediante SSH o HTTP:
+1. Puede clonar el proyecto desde gitlab o github usando SSH o HTTP:
 
-   ```
-   git clone git@gitlab.com:tach-arg/challenge-python-sanic.git 
-   ```
-   ```
-   git clone https://gitlab.com/tach-arg/challenge-python-sanic.git
-   ```
+   * Gitlab
+      ```
+      git clone git@gitlab.com:pablo_alanes/challenge-python-sanic.git
+      ```
+      ```
+      git clone https://gitlab.com/pablo_alanes/challenge-python-sanic.git
+      ```
+   * Github
+      ```
+      git clone git@github.com:PabloAlanes/challenge-python-sanic.git
+      ```
+      ```
+      git clone https://github.com/PabloAlanes/challenge-python-sanic.git
+      ```
+
 2. Una vez clonado el repositorio con el codigo, dirigase a account-service/ dentro del directorio del proyecto:
     ```
     cd challenge-python-sanic/account-service

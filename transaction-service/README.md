@@ -28,14 +28,23 @@ Tambien se usara mongodb para almacenar los datos de las transacciones.
 
 ## Instalacion
 
-1. Clonar el proyecto de gitlab mediante SSH o HTTP:
+1. Puede clonar el proyecto desde gitlab o github usando SSH o HTTP:
 
-   ```
-   git clone git@gitlab.com:tach-arg/challenge-python-sanic.git 
-   ```
-   ```
-   git clone https://gitlab.com/tach-arg/challenge-python-sanic.git
-   ```
+   * Gitlab
+      ```
+      git clone git@gitlab.com:pablo_alanes/challenge-python-sanic.git
+      ```
+      ```
+      git clone https://gitlab.com/pablo_alanes/challenge-python-sanic.git
+      ```
+   * Github
+      ```
+      git clone git@github.com:PabloAlanes/challenge-python-sanic.git
+      ```
+      ```
+      git clone https://github.com/PabloAlanes/challenge-python-sanic.git
+      ```
+
 2. Una vez clonado el repositorio con el codigo, dirigase a transaction-service/ dentro del directorio del proyecto:
     ```
     cd challenge-python-sanic/transaction-service
