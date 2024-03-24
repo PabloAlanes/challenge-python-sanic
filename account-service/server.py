@@ -1,11 +1,11 @@
-import os
 from sanic import Sanic
 from sanic.response import text
+from mongoengine import connect
+from settings.app import *
+from settings.mongodb import *
 
-
-DEBUG = os.getenv('DEBUG') in ['true', 'True']
-SANIC_APP_HOST = os.getenv('HOST') or '0.0.0.0'
-SANIC_APP_PORT = os.getenv('PORT') or '8000'
+# MongoDB connection
+connect(MONGODB_NAME, host=MONGODB_HOST, port=int(MONGODB_PORT))
 
 app = Sanic("MyHelloWorldApp")
 
