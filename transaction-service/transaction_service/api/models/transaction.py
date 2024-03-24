@@ -27,3 +27,18 @@ class TransactionModel(Document):
             'status': self.status.value
         }
 
+    openapi_schema = {
+        'type': 'object',
+        'required': ['source_account', 'destiny_account', 'amount'],
+        'properties': {
+            'source_account': {'type': 'string'},
+            'destiny_account': {'type': 'string'},
+            'amount': {'type': 'integer', 'format': 'int32', 'minimum': 0},
+            'create_at': {'type': 'string', 'format': 'date-time'},
+            'status': {
+                'type': 'string',
+                'enum': ['done', 'pending', 'undefined', 'error'],
+                "default": "undefined"
+            },
+        }
+    }
