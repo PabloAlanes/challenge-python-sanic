@@ -29,6 +29,18 @@ class TestAccount(unittest.TestCase):
         assert resp_body['user'] == 'a b'
         assert resp_body['money'] == 1
 
+    def test_create_account_default_money(self):
+        request, response = self.test_client.post('/accounts/', json={'user': {
+            'first_name': 'a', 'last_name': 'b'}})
+        assert response.status == HTTPStatus.CREATED
+        resp_body = json.loads(response.body)
+        assert resp_body['user'] == 'a b'
+        assert resp_body['money'] == 0
+
+    def test_create_account_without_user(self):
+        request, response = self.test_client.post('/accounts/', json={'money': 1})
+        assert response.status == HTTPStatus.BAD_REQUEST
+
     def test_get_account(self):
         account = AccountModel(money=1, user=UserModel(first_name='a', last_name='b'))
         account.save()
@@ -38,6 +50,10 @@ class TestAccount(unittest.TestCase):
         resp_body = json.loads(response.body)
         assert resp_body['user'] == 'a b'
         assert resp_body['money'] == 1
+
+    def test_get_account_that_not_exist(self):
+        request, response = self.test_client.get('/accounts/65f8cc0a7adc8b14a36d01a0')
+        assert response.status == HTTPStatus.NOT_FOUND
 
     def test_put_account(self):
         account = AccountModel(money=1, user=UserModel(first_name='a', last_name='b'))
@@ -49,6 +65,10 @@ class TestAccount(unittest.TestCase):
         account_updated = AccountModel.objects.get(id=account.id)
         assert account_updated.money == 2
 
+    def test_put_account_that_not_exist(self):
+        request, response = self.test_client.put(f'/accounts/65f8cc0a7adc8b14a36d01a0', json={'money': 2})
+        assert response.status == HTTPStatus.NOT_FOUND
+
     def test_delete_account(self):
         account = AccountModel(money=1, user=UserModel(first_name='a', last_name='b'))
         account.save()
@@ -58,3 +78,7 @@ class TestAccount(unittest.TestCase):
 
         with pytest.raises(DoesNotExist):
             AccountModel.objects.get(id=account.id)
+
+    def test_delete_account_that_not_exist(self):
+        request, response = self.test_client.delete('/accounts/65f8cc0a7adc8b14a36d01a0')
+        assert response.status == HTTPStatus.NOT_FOUND
