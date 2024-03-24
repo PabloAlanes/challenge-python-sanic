@@ -14,7 +14,7 @@ RUN pip install poetry
 COPY poetry.lock pyproject.toml ./
 RUN poetry install --no-interaction --no-cache --no-dev
 
-COPY server.py ./
+COPY server.py worker.py ./
 COPY settings ./settings
 COPY transaction_service ./transaction_service
 
