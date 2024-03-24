@@ -10,6 +10,7 @@ services:
       - ./transaction_service:/sanic/transaction_service
     command: "poetry run python server.py"
     depends_on:
+      - rabbitmq
       - mongodb
     env_file:
       - .env
@@ -24,6 +25,15 @@ services:
       - mongodata:/data/db
     ports:
       - "27017:27017"
+    networks:
+      - local-network
+
+  rabbitmq:
+    hostname: rabbitmq
+    image: rabbitmq:3.13-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
     networks:
       - local-network
 
