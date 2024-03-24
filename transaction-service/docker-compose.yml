@@ -18,6 +18,19 @@ services:
     networks:
       - local-network
 
+  worker-transaction:
+    build: ./
+    command: "poetry run python worker.py"
+    volumes:
+      - ./worker.py:/sanic/worker.py
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+    restart: always
+    networks:
+      - local-network
+
   mongodb:
     hostname: mongodb
     image: mongo
