@@ -1,10 +1,28 @@
 import pika
+import requests
 from settings.rabbitmq import *
-import time
+from settings.services import *
 
 def callback(ch, method, properties, body):
     print(f'Received transaction ID:{body.decode()}')
-    time.sleep(10)
+    transaction_id = body.decode()
+
+    headers = {'Content-Type': 'application/json'}
+
+    try:
+        # Load transaction data
+        transaction_resp = requests.get(f'{TRANSACTION_SVC_URL}/transactions/{transaction_id}',
+                                        headers=headers)
+        transaction = transaction_resp.json()
+        print(transaction)
+
+        # Update transaction status
+        requests.put(f'{TRANSACTION_SVC_URL}/transactions/{transaction_id}',
+                     json={"status": "done"}, headers=headers)
+
+    except requests.exceptions.ConnectionError:
+        print('Error to get transaction data')
+
     ch.basic_ack(delivery_tag=method.delivery_tag)
     print(f'Finish transaction ID:{body.decode()}')
 
