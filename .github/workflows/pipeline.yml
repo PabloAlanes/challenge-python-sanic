@@ -32,10 +32,10 @@ jobs:
       
     - name: Discord Webhook Action
       if: ${{ always() }}
-      uses: tsickert/discord-webhook@v5.3.0
+      uses: ErnaneJ/action-discord-alerts@main
       with:
-        webhook-url: ${{ secrets.WEBHOOK_URL }}
-        content: "Flake8 failed"
+        webhook: ${{ secrets.WEBHOOK_URL }}     
+        status: ${{ job.status }}
   
   bandit:
     runs-on: ubuntu-latest
@@ -59,7 +59,7 @@ jobs:
     
     - name: Discord Webhook Action
       if: ${{ always() }}
-      uses: tsickert/discord-webhook@v5.3.0
+      uses: ErnaneJ/action-discord-alerts@main
       with:
-        webhook-url: ${{ secrets.WEBHOOK_URL }}
-        content: "Bandit failed"
+        webhook: ${{ secrets.WEBHOOK_URL }}     
+        status: ${{ job.status }}
