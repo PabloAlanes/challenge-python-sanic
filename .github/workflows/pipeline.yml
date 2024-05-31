@@ -29,6 +29,13 @@ jobs:
         --exclude src/tests \
         --max-line-length 100 \
         --statistics
+      
+    - name: Discord Webhook Action
+      if: ${{ always() }}
+      uses: tsickert/discord-webhook@v5.3.0
+      with:
+        webhook-url: ${{ secrets.WEBHOOK_URL }}
+        content: "Flake8 failed"
   
   bandit:
     runs-on: ubuntu-latest
@@ -49,3 +56,10 @@ jobs:
     - name: Analysing the code with bandit
       run: |
         bandit --verbose -r ./
+    
+    - name: Discord Webhook Action
+      if: ${{ always() }}
+      uses: tsickert/discord-webhook@v5.3.0
+      with:
+        webhook-url: ${{ secrets.WEBHOOK_URL }}
+        content: "Bandit failed"
